@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 /* ДЗ 3 - работа с массивами и объеектами */
 
 /*
@@ -33,7 +34,28 @@ function map(array, fn) {
  Напишите аналог встроенного метода reduce для работы с массивами
  */
 function reduce(array, fn, initial) {
-    
+    var x = initial || array[0],
+        i = initial ? 0 : 1;
+
+    for (; i < array.length; i++) {
+        x = fn(x, array[i], i, array);
+    }
+
+    return x;
+    // var result, buffer;
+    // if (initial) {
+    //     buffer = fn(initial, array[0], 0, array);
+    //     for (let index = 0; index < array.length; index++) {
+    //         result = fn(buffer, array[index], index, array);
+    //     }
+    //     return result;
+    // } else {
+    //     buffer = array[0];
+    //     for (let index = 1; index < array.length; index++) {
+    //         result = fn(buffer, array[index], index, array);
+    //     }
+    //     return result;
+    // }
 }
 
 /*
@@ -42,6 +64,7 @@ function reduce(array, fn, initial) {
  Функция должна удалить указанное свойство из указанного объекта
  */
 function deleteProperty(obj, prop) {
+    delete obj[prop];
 }
 
 /*
@@ -50,6 +73,7 @@ function deleteProperty(obj, prop) {
  Функция должна проверить существует ли укзаанное свойство в указанном объекте
  */
 function hasProperty(obj, prop) {
+    return prop in obj;
 }
 
 /*
@@ -57,6 +81,7 @@ function hasProperty(obj, prop) {
  Функция должна получить все перечисляемые свойства объекта и вернуть их в виде массива
  */
 function getEnumProps(obj) {
+    return Object.keys(obj);
 }
 
 /*
@@ -64,6 +89,11 @@ function getEnumProps(obj) {
  Функция должна перебрать все свойства объекта, преобразовать их имена в верхний регистра и вернуть в виде массива
  */
 function upperProps(obj) {
+    var result = Object.keys(obj);
+    
+    return result.map(function(x) {
+ return x.toUpperCase(); 
+});
 }
 
 /*
@@ -71,6 +101,14 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  */
 function slice(array, from, to) {
+    var count = to - from;
+    var result = [];
+
+    for (let i = 0; i < count-1; i++, from++) {
+        result.push(array[from]);    
+    }
+    
+    return result;
 }
 
 /*
@@ -79,6 +117,15 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
+    var result = new Proxy (obj, {
+        set(tar, prop, value) {
+            tar[prop] = value * value;
+            
+            return true;
+        }
+    });
+    
+    return result;
 }
 
 export {
