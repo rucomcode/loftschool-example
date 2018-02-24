@@ -7,6 +7,11 @@
  * @return {Element}
  */
 function createDivWithText(text) {
+    let div = document.createElement('div');
+
+    div.textContent = text;
+    
+    return div;
 }
 
 /**
@@ -16,6 +21,9 @@ function createDivWithText(text) {
  * @return {Element}
  */
 function createAWithHref(hrefValue) {
+    let aTag = document.createElement('a');
+    aTag.setAttribute('href', hrefValue);
+    return aTag;
 }
 
 /**
@@ -25,6 +33,7 @@ function createAWithHref(hrefValue) {
  * @param {Element} where - куда вставлять
  */
 function prepend(what, where) {
+    where.insertBefore(what, where.firstChild);
 }
 
 /**
