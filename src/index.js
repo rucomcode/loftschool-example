@@ -22,7 +22,9 @@ function createDivWithText(text) {
  */
 function createAWithHref(hrefValue) {
     let aTag = document.createElement('a');
+
     aTag.setAttribute('href', hrefValue);
+    
     return aTag;
 }
 
@@ -51,6 +53,17 @@ function prepend(what, where) {
  * т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+    var result = [];
+    var children;
+
+    children = where.children;
+    for (var i = 0; i < children.length-1; i++) {
+        if (children[i].nextElementSibling.tagName == 'P') {
+            result.push(children[i]);
+        }
+    }
+    
+    return result;
 }
 
 /**
@@ -64,8 +77,8 @@ function findAllPSiblings(where) {
 function findError(where) {
     var result = [];
 
-    for (var i = 0; i < where.childNodes.length; i++) {
-        result.push(where.childNodes[i].innerText);
+    for (var i = 0; i < where.children.length; i++) {
+        result.push(where.children[i].innerText);
     }
 
     return result;
@@ -85,6 +98,13 @@ function findError(where) {
  * должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+    for (var i = 0; i < where.childNodes.length; i++) {
+        if (where.childNodes[i].nodeType == Node.TEXT_NODE) {
+            where.removeChild(where.childNodes[i]);
+        }
+    }
+    
+    return where;
 }
 
 /**
@@ -98,6 +118,16 @@ function deleteTextNodes(where) {
  * должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
+    for (var i = 0; i < where.childNodes.length; i++) {
+        if (where.childNodes[i].nodeType != Node.TEXT_NODE) {
+            deleteTextNodesRecursive(where.childNodes[i]);
+        } else {
+            where.removeChild(where.childNodes[i]);
+            i--;
+        }
+    }
+
+    return where;
 }
 
 /**
